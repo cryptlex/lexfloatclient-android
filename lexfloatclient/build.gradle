@@ -1,0 +1,53 @@
+plugins {
+	id 'com.android.library'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 30
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'net.java.dev.jna:jna:5.8.0'
+}
+
+if (project.hasProperty("lexVersion")) {
+        project.setVersion(lexVersion)
+}
+
+ext {
+    PUBLISH_GROUP_ID = 'com.cryptlex.android.lexfloatclient'
+    PUBLISH_ARTIFACT_ID = 'lexfloatclient'
+    PUBLISH_VERSION = version
+    OSSRH_USERNAME = System.getenv('OSSRH_USERNAME')
+    OSSRH_PASSWORD = System.getenv('OSSRH_PASSWORD')
+}
+
+nexusPublishing {
+    repositories {
+		sonatype {
+			stagingProfileId = "24cd3440581936"
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+			username = OSSRH_USERNAME
+            password = OSSRH_PASSWORD
+        }
+    }
+}
+
+apply from: "maven-central.gradle"
