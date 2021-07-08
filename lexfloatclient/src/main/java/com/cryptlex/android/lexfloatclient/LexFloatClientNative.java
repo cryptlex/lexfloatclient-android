@@ -1,4 +1,4 @@
-package com.cryptlex.lexfloatclient;
+package com.cryptlex.android.lexfloatclient;
 
 import com.sun.jna.Library;
 import com.sun.jna.NativeLibrary;
