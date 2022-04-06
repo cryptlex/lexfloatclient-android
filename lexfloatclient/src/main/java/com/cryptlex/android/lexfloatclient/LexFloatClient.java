@@ -109,6 +109,62 @@ public class LexFloatClient {
     }
 
     /**
+     * Gets the product version name.
+     * 
+     * @return name - Returns the name of the Product Version being used.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+    
+    public static String GetProductVersionName() throws LexFloatClientException, UnsupportedEncodingException{
+        int status;
+            ByteBuffer buffer = ByteBuffer.allocate(256);
+            status = LexFloatClientNative.GetProductVersionName(buffer, 256);
+            if (LF_OK == status) {
+                return new String(buffer.array(), "UTF-8").trim();
+            }
+        throw new LexFloatClientException(status);
+    }
+
+    /**
+     * Gets the product version display name.
+     * 
+     * @return displayName - Returns the display name of the Product Version being used.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+
+    public static String GetProductVersionDisplayName() throws LexFloatClientException, UnsupportedEncodingException{
+        int status;
+            ByteBuffer buffer = ByteBuffer.allocate(256);
+            status = LexFloatClientNative.GetProductVersionDisplayName(buffer, 256);
+            if (LF_OK == status) {
+                return new String(buffer.array(), "UTF-8").trim();
+            }
+        throw new LexFloatClientException(status);
+    }
+
+    /**
+     * Gets the product version feature flag.
+     * 
+     * @param name - The name of the Feature Flag.
+     * @return The properties of the Feature Flag as an object.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+
+    public static ProductVersionFeatureFlag GetProductVersionFeatureFlag(String name) throws LexFloatClientException, UnsupportedEncodingException{
+        int status;
+        IntByReference enabled = new IntByReference(0);
+        ByteBuffer buffer = ByteBuffer.allocate(256);
+            status = LexFloatClientNative.GetProductVersionFeatureFlag(name, enabled, buffer, 256);
+            if (LF_OK == status) {
+                return new ProductVersionFeatureFlag(name, enabled.getValue() > 0 , new String(buffer.array(), "UTF-8").trim() );
+            }
+        throw new LexFloatClientException(status);
+    }
+
+    /**
      * Get the value of the license metadata field associated with the
      * LexFloatServer license key
      *
