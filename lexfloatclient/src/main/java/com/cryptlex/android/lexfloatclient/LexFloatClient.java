@@ -116,10 +116,10 @@ public class LexFloatClient {
      * @throws UnsupportedEncodingException
      */
     
-    public static String GetProductVersionName() throws LexFloatClientException, UnsupportedEncodingException{
+    public static String GetHostProductVersionName() throws LexFloatClientException, UnsupportedEncodingException{
         int status;
             ByteBuffer buffer = ByteBuffer.allocate(256);
-            status = LexFloatClientNative.GetProductVersionName(buffer, 256);
+            status = LexFloatClientNative.GetHostProductVersionName(buffer, 256);
             if (LF_OK == status) {
                 return new String(buffer.array(), "UTF-8").trim();
             }
@@ -134,10 +134,10 @@ public class LexFloatClient {
      * @throws UnsupportedEncodingException
      */
 
-    public static String GetProductVersionDisplayName() throws LexFloatClientException, UnsupportedEncodingException{
+    public static String GetHostProductVersionDisplayName() throws LexFloatClientException, UnsupportedEncodingException{
         int status;
             ByteBuffer buffer = ByteBuffer.allocate(256);
-            status = LexFloatClientNative.GetProductVersionDisplayName(buffer, 256);
+            status = LexFloatClientNative.GetHostProductVersionDisplayName(buffer, 256);
             if (LF_OK == status) {
                 return new String(buffer.array(), "UTF-8").trim();
             }
@@ -153,11 +153,11 @@ public class LexFloatClient {
      * @throws UnsupportedEncodingException
      */
 
-    public static ProductVersionFeatureFlag GetProductVersionFeatureFlag(String name) throws LexFloatClientException, UnsupportedEncodingException{
+    public static ProductVersionFeatureFlag GetHostProductVersionFeatureFlag(String name) throws LexFloatClientException, UnsupportedEncodingException{
         int status;
         IntByReference enabled = new IntByReference(0);
         ByteBuffer buffer = ByteBuffer.allocate(256);
-            status = LexFloatClientNative.GetProductVersionFeatureFlag(name, enabled, buffer, 256);
+            status = LexFloatClientNative.GetHostProductVersionFeatureFlag(name, enabled, buffer, 256);
             if (LF_OK == status) {
                 return new ProductVersionFeatureFlag(name, enabled.getValue() > 0 , new String(buffer.array(), "UTF-8").trim() );
             }
