@@ -29,11 +29,11 @@ public class LexFloatClientNative implements Library {
 
     public static native int SetFloatingClientMetadata(String key, String value);
 
-    public static native int GetProductVersionName(ByteBuffer name, int length);
+    public static native int GetHostProductVersionName(ByteBuffer name, int length);
     
-    public static native int GetProductVersionDisplayName(ByteBuffer name, int length);
+    public static native int GetHostProductVersionDisplayName(ByteBuffer name, int length);
     
-    public static native int GetProductVersionFeatureFlag(String name, IntByReference enabled, ByteBuffer data, int length);
+    public static native int GetHostProductVersionFeatureFlag(String name, IntByReference enabled, ByteBuffer data, int length);
 
     public static native int GetHostLicenseMetadata(String key, ByteBuffer value, int length);
     
