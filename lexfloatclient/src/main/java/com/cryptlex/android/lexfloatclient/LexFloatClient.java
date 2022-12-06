@@ -153,13 +153,13 @@ public class LexFloatClient {
      * @throws UnsupportedEncodingException
      */
 
-    public static ProductVersionFeatureFlag GetHostProductVersionFeatureFlag(String name) throws LexFloatClientException, UnsupportedEncodingException{
+    public static HostProductVersionFeatureFlag GetHostProductVersionFeatureFlag(String name) throws LexFloatClientException, UnsupportedEncodingException{
         int status;
         IntByReference enabled = new IntByReference(0);
         ByteBuffer buffer = ByteBuffer.allocate(256);
             status = LexFloatClientNative.GetHostProductVersionFeatureFlag(name, enabled, buffer, 256);
             if (LF_OK == status) {
-                return new ProductVersionFeatureFlag(name, enabled.getValue() > 0 , new String(buffer.array(), "UTF-8").trim() );
+                return new HostProductVersionFeatureFlag(name, enabled.getValue() > 0 , new String(buffer.array(), "UTF-8").trim() );
             }
         throw new LexFloatClientException(status);
     }
@@ -193,7 +193,7 @@ public class LexFloatClient {
      * @throws LexFloatClientException
      * @throws UnsupportedEncodingException
      */
-    public static LicenseMeterAttribute GetHostLicenseMeterAttribute(String name) throws LexFloatClientException, UnsupportedEncodingException {
+    public static HostLicenseMeterAttribute GetHostLicenseMeterAttribute(String name) throws LexFloatClientException, UnsupportedEncodingException {
         int status;
         IntByReference allowedUses = new IntByReference(0);
         IntByReference totalUses = new IntByReference(0);
@@ -201,7 +201,7 @@ public class LexFloatClient {
 
             status = LexFloatClientNative.GetHostLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
             if (LF_OK == status) {
-                return new LicenseMeterAttribute(name, allowedUses.getValue(), totalUses.getValue(), grossUses.getValue());
+                return new HostLicenseMeterAttribute(name, allowedUses.getValue(), totalUses.getValue(), grossUses.getValue());
             }
         throw new LexFloatClientException(status);
     }
