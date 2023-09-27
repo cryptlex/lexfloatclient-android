@@ -1,5 +1,7 @@
 plugins {
 	id 'com.android.library'
+    id 'maven-publish'
+    id 'signing'
 }
 
 android {
@@ -20,34 +22,74 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+
+    namespace 'com.cryptlex.android.lexfloatclient'
 }
 
 dependencies {
     implementation 'net.java.dev.jna:jna:5.8.0'
 }
 
-if (project.hasProperty("lexVersion")) {
-        project.setVersion(lexVersion)
-}
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId PUBLISH_GROUP_ID
+            artifactId PUBLISH_ARTIFACT_ID
+            version PUBLISH_VERSION
+            afterEvaluate {
+                from components.release
+                pom {
+					name = 'LexFloatClient'
+					description = 'LexFloatClient wrapper for Android (licensing library).'
+					url = 'https://github.com/cryptlex/lexfloatclient-android'
+					licenses {
+						license {
+							name = 'MIT License'
+							url = 'http://www.opensource.org/licenses/mit-license.php'
+						}
+					}
+					organization {
+						name = 'Cryptlex, LLC'
+						url = 'https://cryptlex.com'
+					}
+					developers {
+						developer {
+							name = 'Cryptlex Team'
+							email = 'support@cryptlex.com'
+							organization = 'Cryptlex, LLC.'
+							organizationUrl = 'https://cryptlex.com'
+						}
+					}
+					scm {
+						connection = 'scm:git:https://github.com/cryptlex/lexfloatclient-android.git'
+						developerConnection = 'scm:git:ssh://github.com/cryptlex/lexfloatclient-android.git'
+						url = 'https://github.com/cryptlex/lexfloatclient-android'
+					}
+			    }
+            }
+        }
 
-ext {
-    PUBLISH_GROUP_ID = 'com.cryptlex.android.lexfloatclient'
-    PUBLISH_ARTIFACT_ID = 'lexfloatclient'
-    PUBLISH_VERSION = version
-    OSSRH_USERNAME = System.getenv('OSSRH_USERNAME')
-    OSSRH_PASSWORD = System.getenv('OSSRH_PASSWORD')
-}
-
-nexusPublishing {
-    repositories {
-		sonatype {
-			stagingProfileId = "24cd3440581936"
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-			username = OSSRH_USERNAME
-            password = OSSRH_PASSWORD
+        test(MavenPublication) {
+            groupId PUBLISH_GROUP_ID
+            artifactId PUBLISH_ARTIFACT_ID
+            version PUBLISH_VERSION
+            afterEvaluate {
+                from components.release
+            }
         }
     }
 }
 
-apply from: "maven-central.gradle"
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.release
+}
