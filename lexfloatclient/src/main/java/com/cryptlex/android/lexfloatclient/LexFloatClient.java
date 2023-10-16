@@ -109,6 +109,23 @@ public class LexFloatClient {
     }
 
     /**
+     * Gets the version of this library.
+     * 
+     * @return libraryVersion - Returns the library version.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+    public static String GetFloatingClientLibraryVersion() throws LexFloatClientException, UnsupportedEncodingException{
+        int status;
+            ByteBuffer buffer = ByteBuffer.allocate(256);
+            status = LexFloatClientNative.GetFloatingClientLibraryVersion(buffer, 256);
+            if (LF_OK == status) {
+                return new String(buffer.array(), "UTF-8").trim();
+            }
+        throw new LexFloatClientException(status);
+    }
+
+    /**
      * Gets the product version name.
      * 
      * @return name - Returns the name of the Product Version being used.

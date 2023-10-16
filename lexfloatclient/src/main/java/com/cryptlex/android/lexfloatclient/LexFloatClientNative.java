@@ -29,6 +29,8 @@ public class LexFloatClientNative implements Library {
 
     public static native int SetFloatingClientMetadata(String key, String value);
 
+    public static native int GetFloatingClientLibraryVersion(ByteBuffer libraryVersion, int length);
+
     public static native int GetHostProductVersionName(ByteBuffer name, int length);
     
     public static native int GetHostProductVersionDisplayName(ByteBuffer name, int length);
