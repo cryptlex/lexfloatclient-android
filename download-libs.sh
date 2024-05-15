@@ -1,6 +1,6 @@
 #!/bin/bash 
 set -e
-VERSION="v4.8.0";
+VERSION="v4.8.1";
 curl -O -L https://dl.cryptlex.com/downloads/${VERSION}/LexFloatClient-Android.zip
 curl -O -L https://github.com/java-native-access/jna/raw/master/lib/native/android-armv7.jar
 curl -O -L https://github.com/java-native-access/jna/raw/master/lib/native/android-aarch64.jar
