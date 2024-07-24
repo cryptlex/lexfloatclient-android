@@ -18,6 +18,10 @@ public class LexFloatClient {
      */
     public static final int LF_OK = 0;
 
+     /* Permission Flags */
+     public static final int LF_USER = 10;
+     public static final int LF_ALL_USERS = 11;
+
     /**
      * Failure code.
      */
@@ -36,7 +40,30 @@ public class LexFloatClient {
         if (LF_OK != status) {
             throw new LexFloatClientException(status);
         }
-    }
+    }   
+    
+    /**
+    * This function must be called on every start of your program after SetHostProductId()
+    * function in case the application allows borrowing of licenses or system wide activation.
+    *
+    * @param flags     depending upon whether your application requires admin/root
+    *                  permissions to run or not, this parameter can have one of
+    *                  the following values: LF_USER, LF_ALL_USERS
+    * @throws LexFloatClientException
+    */
+   public static void SetPermissionFlag(int flags) throws LexFloatClientException {
+       int status;
+       try {
+        LexFloatClientNative.SetJniEnv(JNIEnv.CURRENT);
+       } catch (Exception e) {
+           System.out.println(e.toString());
+       }
+
+       status = LexFloatClientNative.SetProductId(flags);
+       if (LA_OK != status) {
+           throw new LexFloatClientException(status);
+       }
+   }
 
     /**
      * Sets the network address of the LexFloatServer.<br>
