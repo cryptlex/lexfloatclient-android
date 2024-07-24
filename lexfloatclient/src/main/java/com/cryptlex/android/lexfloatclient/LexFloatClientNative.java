@@ -28,6 +28,8 @@ public class LexFloatClientNative implements Library {
     public static native int SetFloatingLicenseCallback(CallbackType callback);
 
     public static native int SetFloatingClientMetadata(String key, String value);
+    
+    public static native int GetFloatingClientLeaseExpiryDate(IntByReference expiryDate);
 
     public static native int GetFloatingClientLibraryVersion(ByteBuffer libraryVersion, int length);
 
