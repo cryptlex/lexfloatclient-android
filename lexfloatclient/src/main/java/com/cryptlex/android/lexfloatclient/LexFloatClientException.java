@@ -1,4 +1,4 @@
-package com.cryptlex.lexfloatclient;
+package com.cryptlex.android.lexfloatclient;
 
 public class LexFloatClientException extends Exception {
 
