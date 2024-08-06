@@ -22,13 +22,19 @@ public class LexFloatClientNative implements Library {
         void invoke(int status);
     }
 
+    public static native int SetPermissionFlag(int flags);
+
     public static native int SetHostProductId(String productId);
+
+    public static native int GetHostConfigInternal(ByteBuffer hostconfig, int length);
 
     public static native int SetHostUrl(String hostUrl);
 
     public static native int SetFloatingLicenseCallback(CallbackType callback);
 
     public static native int SetFloatingClientMetadata(String key, String value);
+    
+    public static native int GetFloatingClientLeaseExpiryDate(IntByReference expiryDate);
 
     public static native int GetFloatingClientLibraryVersion(ByteBuffer libraryVersion, int length);
 
@@ -43,10 +49,14 @@ public class LexFloatClientNative implements Library {
     public static native int GetHostLicenseMeterAttribute(String name, LongByReference allowedUses, LongByReference totalUses, LongByReference grossUses);
     
     public static native int GetHostLicenseExpiryDate(IntByReference expiryDate);
+
+    public static native int GetFloatingClientMetadata(String key, ByteBuffer value, int length);
     
     public static native int GetFloatingClientMeterAttributeUses(String name, IntByReference uses);
 
     public static native int RequestFloatingLicense();
+
+    public static native int RequestOfflineFloatingLicense(int leaseDuration);
 
     public static native int DropFloatingLicense();
 
