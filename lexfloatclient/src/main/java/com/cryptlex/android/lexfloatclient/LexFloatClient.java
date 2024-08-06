@@ -322,8 +322,8 @@ public class LexFloatClient {
     public static String GetFloatingClientMetadata(String key) throws LexFloatClientException, UnsupportedEncodingException {
         int status;
         
-            ByteBuffer buffer = ByteBuffer.allocate(256);
-            status = LexFloatClientNative.GetFloatingClientMetadata(key, buffer, 256);
+            ByteBuffer buffer = ByteBuffer.allocate(4096);
+            status = LexFloatClientNative.GetFloatingClientMetadata(key, buffer, 4096);
             if (LF_OK == status) {
                 return new String(buffer.array(), "UTF-8");
             }
