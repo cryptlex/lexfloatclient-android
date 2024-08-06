@@ -141,7 +141,7 @@ public class LexFloatClient {
 
            ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
            status = LexFloatClientNative.GetHostConfigInternal(buffer, bufferSize);
-           if (LA_OK == status) {
+           if (LF_OK == status) {
                String hostConfigJson = new String(buffer.array(), "UTF-8").trim();
                if (!hostConfigJson.isEmpty()) {
                    HostConfig hostConfig = null;
