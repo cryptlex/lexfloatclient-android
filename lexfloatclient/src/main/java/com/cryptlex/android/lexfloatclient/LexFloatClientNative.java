@@ -21,6 +21,8 @@ public class LexFloatClientNative implements Library {
         void invoke(int status);
     }
 
+    public static native int SetPermissionFlag(int flags);
+
     public static native int SetHostProductId(String productId);
 
     public static native int GetHostConfigInternal(ByteBuffer hostconfig, int length);
