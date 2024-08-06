@@ -278,9 +278,11 @@ public class LexFloatClientException extends Exception {
      * MESSAGE: The product version feature flag does not exist.
      */
     public static final int LF_E_FEATURE_FLAG_NOT_FOUND = 58;
+
     /*
-     * Insufficient system permissions.
-    */
+     * CODE: LF_E_SYSTEM_PERMISSION
+     * MESSAGE: Insufficient system permissions.
+     */
     public static final int LF_E_SYSTEM_PERMISSION = 59;
     
     /*
@@ -291,10 +293,10 @@ public class LexFloatClientException extends Exception {
     public static final int LF_E_IP = 60;
 
     /*
-    * CODE: LF_E_INVALID_PERMISSION_FLAG
-    * 
-    * MESSAGE: Invalid permission flag.
-    */
+     * CODE: LF_E_INVALID_PERMISSION_FLAG
+     * 
+     * MESSAGE: Invalid permission flag.
+     */
     public static final int LF_E_INVALID_PERMISSION_FLAG = 61;
 
     /*
