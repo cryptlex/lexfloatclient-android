@@ -23,6 +23,8 @@ public class LexFloatClientNative implements Library {
 
     public static native int SetHostProductId(String productId);
 
+    public static native int GetHostConfigInternal(ByteBuffer hostconfig, int length);
+
     public static native int SetHostUrl(String hostUrl);
 
     public static native int SetFloatingLicenseCallback(CallbackType callback);

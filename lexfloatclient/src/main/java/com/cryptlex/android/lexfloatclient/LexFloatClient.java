@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.io.UnsupportedEncodingException;
 import com.sun.jna.ptr.IntByReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,7 +143,37 @@ public class LexFloatClient {
                 return new String(buffer.array(), "UTF-8").trim();
             }
         throw new LexFloatClientException(status);
-    }
+    } 
+    
+    /**
+    * Gets the host configuration.
+    *
+    * @return Returns host configuration.
+    * @throws LexFloatClientException
+    * @throws UnsupportedEncodingException
+    */
+
+   public static HostConfig GetHostConfig() throws LexFloatClientException, UnsupportedEncodingException {
+       int status;
+       int bufferSize = 1024;
+
+           ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
+           status = LexFloatClientNative.GetHostConfigInternal(buffer, bufferSize);
+           if (LF_OK == status) {
+               String hostConfigJson = new String(buffer.array(), "UTF-8").trim();
+               if (!hostConfigJson.isEmpty()) {
+                   HostConfig hostConfig = null;
+                   ObjectMapper objectMapper = new ObjectMapper();
+                   try {
+                    hostConfig = objectMapper.readValue(hostConfigJson, HostConfig.class);
+                   } catch (JsonProcessingException e) {}
+                   return hostConfig;
+               } else {
+                   return null;
+               } 
+           }
+       throw new LexFloatClientException(status);
+   }
 
     /**
      * Gets the product version name.
