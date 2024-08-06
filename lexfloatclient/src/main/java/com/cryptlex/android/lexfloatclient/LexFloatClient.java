@@ -258,6 +258,25 @@ public class LexFloatClient {
                 throw new LexFloatClientException(status);
         }
     }
+    /**
+     * Gets the value of the floating client metadata.
+     *
+     * @param key key of the metadata field whose value you want to get
+     * @return Returns the metadata key value
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+    public static String GetFloatingClientMetadata(String key) throws LexFloatClientException, UnsupportedEncodingException {
+        int status;
+        
+            ByteBuffer buffer = ByteBuffer.allocate(256);
+            status = LexFloatClientNative.GetFloatingClientMetadata(key, buffer, 256);
+            if (LF_OK == status) {
+                return new String(buffer.array(), "UTF-8");
+            }
+        throw new LexFloatClientException(status);
+    }
+    
 
     /**
      * Gets the meter attribute uses consumed by the floating client.
