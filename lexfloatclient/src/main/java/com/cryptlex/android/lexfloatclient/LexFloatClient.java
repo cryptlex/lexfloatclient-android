@@ -53,12 +53,6 @@ public class LexFloatClient {
     */
    public static void SetPermissionFlag(int flags) throws LexFloatClientException {
        int status;
-       try {
-        LexFloatClientNative.SetJniEnv(JNIEnv.CURRENT);
-       } catch (Exception e) {
-           System.out.println(e.toString());
-       }
-
        status = LexFloatClientNative.SetProductId(flags);
        if (LA_OK != status) {
            throw new LexFloatClientException(status);
