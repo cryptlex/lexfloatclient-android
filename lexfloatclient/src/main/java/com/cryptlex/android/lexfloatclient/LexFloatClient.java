@@ -271,6 +271,20 @@ public class LexFloatClient {
             throw new LexFloatClientException(status);
         }
     }
+    /**
+     * Sends the request to lease the license from the LexFloatServer for offline usage.
+     * 
+     * @param leaseDuration
+     * 
+     * @throws LexFloatClientException
+     */
+    public static void RequestOfflineFloatingLicense(int leaseDuration) throws LexFloatClientException {
+        int status;
+        status = LexFloatClientNative.RequestOfflineFloatingLicense(leaseDuration);
+        if (LF_OK != status) {
+            throw new LexFloatClientException(status);
+        }
+    }
 
     /**
      * Sends the request to the LexFloatServer to free the license.<br>
