@@ -281,6 +281,7 @@ public class LexFloatClientException extends Exception {
 
     /*
      * CODE: LF_E_SYSTEM_PERMISSION
+     * 
      * MESSAGE: Insufficient system permissions.
      */
     public static final int LF_E_SYSTEM_PERMISSION = 59;
