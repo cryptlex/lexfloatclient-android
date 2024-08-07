@@ -62,8 +62,8 @@ public class LexFloatClient {
     */
    public static void SetPermissionFlag(int flags) throws LexFloatClientException {
        int status;
-       status = LexFloatClientNative.SetProductId(flags);
-       if (LA_OK != status) {
+       status = LexFloatClientNative.SetPermissionFlag(flags);
+       if (LF_OK != status) {
            throw new LexFloatClientException(status);
        }
    }
@@ -319,6 +319,25 @@ public class LexFloatClient {
                 throw new LexFloatClientException(status);
         }
     }
+
+    /**
+     * Gets the mode of the floating license (online or offline).
+     * 
+     * @return mode - Returns the floating license mode.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+    public static String GetFloatingLicenseMode() throws LexFloatClientException, UnsupportedEncodingException {
+        int status;
+        
+            ByteBuffer buffer = ByteBuffer.allocate(256);
+            status = LexFloatClientNative.GetFloatingLicenseMode(buffer, 256);
+            if (LF_OK == status) {
+                return new String(buffer.array(), "UTF-8").trim();
+            }
+        throw new LexFloatClientException(status);
+    }
+
     /**
      * Gets the value of the floating client metadata.
      *
@@ -371,6 +390,7 @@ public class LexFloatClient {
     }
     /**
      * Sends the request to lease the license from the LexFloatServer for offline usage.
+     * The maximum value of lease duration is configured in the config.yml of LexFloatServer.
      * 
      * @param leaseDuration
      * 
