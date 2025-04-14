@@ -8,6 +8,7 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 import java.math.BigInteger;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -206,6 +207,8 @@ public class LexFloatClient {
     /**
      * Gets the product version name.
      * 
+     * @deprecated This function is deprecated. Use GetHostLicenseEntitlementSetName() instead.
+     * 
      * @return name - Returns the name of the Product Version being used.
      * @throws LexFloatClientException
      * @throws UnsupportedEncodingException
@@ -223,6 +226,8 @@ public class LexFloatClient {
 
     /**
      * Gets the product version display name.
+     * 
+     * @deprecated This function is deprecated. Use GetHostLicenseEntitlementSetDisplayName() instead.
      * 
      * @return displayName - Returns the display name of the Product Version being used.
      * @throws LexFloatClientException
@@ -242,6 +247,8 @@ public class LexFloatClient {
     /**
      * Gets the product version feature flag.
      * 
+     * @deprecated This function is deprecated. Use GetHostFeatureEntitlement() instead.
+     * 
      * @param name - The name of the Feature Flag.
      * @return The properties of the Feature Flag as an object.
      * @throws LexFloatClientException
@@ -255,6 +262,105 @@ public class LexFloatClient {
             status = LexFloatClientNative.GetHostProductVersionFeatureFlag(name, enabled, buffer, 256);
             if (LF_OK == status) {
                 return new HostProductVersionFeatureFlag(name, enabled.getValue() > 0 , new String(buffer.array(), "UTF-8").trim() );
+            }
+        throw new LexFloatClientException(status);
+    }
+
+    /**
+     * Gets the name of the entitlement set associated with the LexFloatServer license.
+     * 
+     * @return Returns the host license entitlement set name.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+    public static String GetHostLicenseEntitlementSetName() throws LexFloatClientException, UnsupportedEncodingException {
+        int status;
+        int bufferSize = 256;
+        
+        ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
+        status = LexFloatClientNative.GetHostLicenseEntitlementSetName(buffer, bufferSize);
+        if (LF_OK == status) {
+            return new String(buffer.array(), "UTF-8").trim();
+        }
+        throw new LexFloatClientException(status);
+    }
+
+    /**
+     * Gets the display name of the entitlement set associated with the LexFloatServer license.
+     * 
+     * @return Returns the host license entitlement set display name.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+    public static String GetHostLicenseEntitlementSetDisplayName() throws LexFloatClientException, UnsupportedEncodingException {
+        int status;
+        int bufferSize = 256;
+
+        ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
+        status = LexFloatClientNative.GetHostLicenseEntitlementSetDisplayName(buffer, bufferSize);
+        if (LF_OK == status) {
+            return new String(buffer.array(), "UTF-8").trim();
+        }
+        throw new LexFloatClientException(status);
+    }
+
+    /**
+     * Gets the feature entitlements associated with the LexFloatServer license.
+     * 
+     * Feature entitlements can be linked directly to a license (license feature entitlements) 
+     * or via entitlement sets. If a feature entitlement is defined in both, the value from 
+     * the license feature entitlement takes precedence, overriding the entitlement set value.
+     * 
+     * @return Returns a list of host feature entitlements.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+    public static List<HostFeatureEntitlement> GetHostFeatureEntitlements() throws LexFloatClientException, UnsupportedEncodingException {
+        int status;
+        int bufferSize = 4096;
+
+        ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
+            status = LexFloatClientNative.GetHostFeatureEntitlementsInternal(buffer, bufferSize);
+            if (LF_OK == status) {
+                String hostFeatureEntitlementsJson = new String(buffer.array(), "UTF-8").trim();
+                if (!hostFeatureEntitlementsJson.isEmpty()) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    try {
+                        List<HostFeatureEntitlement> hostFeatureEntitlements = objectMapper.readValue(hostFeatureEntitlementsJson, new TypeReference<List<HostFeatureEntitlement>>() {});
+                        return hostFeatureEntitlements;
+                    } catch (JsonProcessingException e) {}
+                } else {
+                    return new ArrayList<>();
+                }
+            }
+        throw new LexFloatClientException(status);
+    }
+
+    /**
+     * Gets the feature entitlement associated with the LexFloatServer license.
+     * 
+     * Feature entitlements can be linked directly to a license (license feature entitlements) 
+     * or via entitlement sets. If a feature entitlement is defined in both, the value from 
+     * the license feature entitlement takes precedence, overriding the entitlement set value.
+     * 
+     * @param name The name of the feature.
+     * @return Returns the host feature entitlement object.
+     * @throws LexFloatClientException
+     * @throws UnsupportedEncodingException
+     */
+    public static HostFeatureEntitlement GetHostFeatureEntitlement(String name) throws LexFloatClientException, UnsupportedEncodingException {
+        int status;
+        int bufferSize = 1024;
+
+        ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
+            status = LexFloatClientNative.GetHostFeatureEntitlementInternal(name, buffer, bufferSize);
+            if (LF_OK == status) {
+                String hostFeatureEntitlementJson = new String(buffer.array(), "UTF-8").trim();
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    HostFeatureEntitlement hostFeatureEntitlement = objectMapper.readValue(hostFeatureEntitlementJson, HostFeatureEntitlement.class);
+                    return hostFeatureEntitlement;
+                } catch (JsonProcessingException e) {}
             }
         throw new LexFloatClientException(status);
     }
