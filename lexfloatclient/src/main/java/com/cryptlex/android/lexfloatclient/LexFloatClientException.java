@@ -101,6 +101,12 @@ public class LexFloatClientException extends Exception {
         case LF_E_MACHINE_FINGERPRINT:
             message = "Machine fingerprint has changed since activation.";
             break;
+        case LF_E_ENTITLEMENT_SET_NOT_LINKED:
+            message = "No entitlement set is linked to the license.";
+            break;
+        case LF_E_FEATURE_ENTITLEMENT_NOT_FOUND:
+            message = "The feature entitlement does not exist.";
+            break;
         case LF_E_CLIENT:
             message = "Client error.";
             break;
@@ -340,7 +346,21 @@ public class LexFloatClientException extends Exception {
      *
      * MESSAGE: Request blocked due to untrusted proxy.
      */
-    public static final int  LF_E_PROXY_NOT_TRUSTED = 67;
+    public static final int LF_E_PROXY_NOT_TRUSTED = 67;
+
+    /*
+     * CODE: LF_E_ENTITLEMENT_SET_NOT_LINKED
+     *
+     * MESSAGE: No entitlement set is linked to the license.
+     */
+    public static final int LF_E_ENTITLEMENT_SET_NOT_LINKED = 68;
+
+    /*
+     * CODE: LF_E_FEATURE_ENTITLEMENT_NOT_FOUND
+     *
+     * MESSAGE: The feature entitlement does not exist.
+     */
+    public static final int LF_E_FEATURE_ENTITLEMENT_NOT_FOUND = 69;
     
     /*
      * CODE: LF_E_CLIENT
