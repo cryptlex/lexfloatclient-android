@@ -15,6 +15,7 @@ import java.io.File;
 public class LexFloatClientNative implements Library {
 
     static {
+        System.setProperty("jna.nosys", "true");
         Native.register(LexFloatClientNative.class,"LexFloatClient");
     }
 
