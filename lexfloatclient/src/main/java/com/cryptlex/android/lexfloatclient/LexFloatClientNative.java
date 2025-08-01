@@ -15,6 +15,7 @@ import java.io.File;
 public class LexFloatClientNative implements Library {
 
     static {
+        System.setProperty("jna.nosys", "true");
         Native.register(LexFloatClientNative.class,"LexFloatClient");
     }
 
@@ -51,6 +52,8 @@ public class LexFloatClientNative implements Library {
     public static native int GetHostFeatureEntitlementsInternal(ByteBuffer featureEntitlementsJson, int length);
     
     public static native int GetHostFeatureEntitlementInternal(String featureName, ByteBuffer featureEntitlementJson, int length);
+
+    public static native int GetHostProductMetadata(String key, ByteBuffer value, int length);
 
     public static native int GetHostLicenseMetadata(String key, ByteBuffer value, int length);
     

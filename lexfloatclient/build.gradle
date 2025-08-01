@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    implementation 'net.java.dev.jna:jna:5.8.0'
+    implementation 'net.java.dev.jna:jna:5.13.0@aar'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 }
 
