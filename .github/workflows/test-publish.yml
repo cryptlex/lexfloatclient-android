@@ -25,4 +25,4 @@ jobs:
       run: gradle wrapper
                  
     - name: Publish with Gradle
-      run: ./gradlew lexfloatclient:publishTestPublicationToMavenLocal --info --warning-mode all
+      run: ./gradlew lexfloatclient:publishToMavenLocal --info --warning-mode all --dry-run
