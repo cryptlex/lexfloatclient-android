@@ -11,6 +11,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      PACKAGE_VERSION: ${{ github.event.inputs.packageVersion }}
     steps:
     - uses: actions/checkout@v2
 
@@ -39,4 +41,19 @@ jobs:
         ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
         ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
         ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
-      run: ./gradlew lexfloatclient:publishAndReleaseToMavenCentral  -PlexVersion=${{github.event.inputs.packageVersion}} --info --warning-mode all      
+      run: ./gradlew lexfloatclient:publishAndReleaseToMavenCentral  -PlexVersion=${{ env.PACKAGE_VERSION }} --info --warning-mode all
+
+    - name: Extract version and create tag
+      run: |
+        git tag "${{ env.PACKAGE_VERSION }}" 2>/dev/null || echo "Tag already exists"
+        git push origin "${{ env.PACKAGE_VERSION }}" || true
+
+    - name: Notify slack releases channel
+      uses: slackapi/slack-github-action@v2
+      with:
+        webhook: ${{ secrets.SLACK_RELEASES_PROD_WEBHOOK_URL }}
+        webhook-type: webhook-trigger
+        payload: |
+          status: "${{ job.status }}"
+          environment: "PRODUCTION"
+          project: "LexFloatClient Android"
