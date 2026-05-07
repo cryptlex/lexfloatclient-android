@@ -52,7 +52,7 @@ mavenPublishing {
 		licenses {
 			license {
 				name = 'Proprietary'
-				url = 'https://docs.cryptlex.com/legal/terms-of-service'
+				url = 'https://cryptlex.com/legal/terms-of-service'
 			}
 		}
 		organization {
